@@ -95,6 +95,19 @@ export default class Webcam extends Component {
     return canvas && canvas.toDataURL(this.props.screenshotFormat);
   }
 
+  getBlob() {
+    if (!this.state.hasUserMedia) return null;
+
+    const canvas = this.getCanvas();
+    return new Promise((resolve, reject) => {
+      if (!canvas) reject();
+
+      canvas.toBlob((blob) => {
+        resolve(blob)
+      })
+    }, this.props.screenshotFormat)
+  }
+
   getCanvas() {
     if (!this.state.hasUserMedia || !this.video.videoHeight) return null;
 
